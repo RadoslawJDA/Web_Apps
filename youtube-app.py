@@ -103,7 +103,7 @@ def convert_df(df):
 csv = convert_df(df)
 
 st.download_button(
-   "Press to Download",
+   "Download Dataset",
    csv,
    "file.csv",
    "text/csv",
