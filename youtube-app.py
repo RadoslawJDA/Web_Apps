@@ -96,6 +96,9 @@ df = get_videos(df)
 
 st.dataframe(df)
 
+df23 = pd.read_csv('output.csv')
+st.dataframe(df23)
+
 def convert_df(df):
    return df.to_csv(index=False).encode('utf-8')
 
