@@ -94,8 +94,9 @@ response =  requests.get(url).json()
 df = pd.DataFrame(columns=("video_id","video_title","upload_date","view_count","like_count","comment_count"))
 df = get_videos(df)
 
-st.dataframe(df)
 
+st.dataframe(df)
+# the same dataset without api call
 df23 = pd.read_csv('output.csv')
 st.dataframe(df23)
 
