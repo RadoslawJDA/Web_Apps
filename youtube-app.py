@@ -4,6 +4,7 @@ import streamlit as st
 import time
 import re
 import json
+import numpy
 from bs4 import BeautifulSoup
 
 #scraping channel id from url input
