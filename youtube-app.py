@@ -17,8 +17,7 @@ json_data = json.loads(data)
 
 CHANNEL_ID = json_data['header']['c4TabbedHeaderRenderer']['channelId']
 
-#keys
-
+#API keys
 API_KEY = 'AIzaSyCdY6oRpKZkrQNcW28u0wCCM-HL24aVrpQ'#'AIzaSyDLgV5vjxJ5Qo9JCr1hfJoUCd4rSyUpwnc'#
 
 
@@ -41,7 +40,6 @@ def get_videos(df):
   #api call
   pageToken = ""
   url = "https://www.googleapis.com/youtube/v3/search?key="+API_KEY+"&channelId="+CHANNEL_ID+"&part=snippet,id&order=date&maxResults=10000"+pageToken
-
   response =  requests.get(url).json()
 
   for video in response['items']:
