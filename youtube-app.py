@@ -93,7 +93,7 @@ response =  requests.get(url).json()
 df = pd.DataFrame(columns=("video_id","video_title","upload_date","view_count","like_count","comment_count"))
 df = get_videos(df)
 
-# dataset without making api call (api call restrictions)
+# dataset without making api call (apirestrictions)
 
 # Define the Streamlit app
 def app():
@@ -111,6 +111,23 @@ def app():
 if __name__ == "__main__":
     app()
 
+# title
+with header_mid:
+    st.title('YouTube Dashboard')
+    
+# sidebar
+with st.sidebar:
+    Campaign_filter = st.multiselect(label= 'Select The Campaign',
+                                options=df['campaign'].unique(),
+                                default=df['campaign'].unique())
+
+    Age_filter = st.multiselect(label='Select Age Group',
+                            options=df['age'].unique(),
+                            default=df['age'].unique())
+
+    Gender_filter = st.multiselect(label='Select Gender Group',
+                            options=df['gender'].unique(),
+                            default=df['gender'].unique())
 
 
 # showing dataset
