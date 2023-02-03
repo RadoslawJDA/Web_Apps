@@ -7,20 +7,25 @@ import json
 import numpy
 from bs4 import BeautifulSoup
 
+st.set_page_config(page_title="YouTube Data Dashboard", page_icon="chart_with_upwards_trend")
+
+
 #scraping channel id from url input
+def get_channel_id():
+  URL = st.sidebar.text_input("Enter channel's URL", 'https://www.youtube.com/@rad827')
+  soup = BeautifulSoup(requests.get(URL, cookies={'CONSENT': 'YES+1'}).text, "html.parser")
 
-URL = st.text_input("Enter channel's URL", 'https://www.youtube.com/@rad827')
-soup = BeautifulSoup(requests.get(URL, cookies={'CONSENT': 'YES+1'}).text, "html.parser")
+  data = re.search(r"var ytInitialData = ({.*});", str(soup.prettify())).group(1)
+  json_data = json.loads(data)
 
-data = re.search(r"var ytInitialData = ({.*});", str(soup.prettify())).group(1)
-json_data = json.loads(data)
-
-CHANNEL_ID = json_data['header']['c4TabbedHeaderRenderer']['channelId']
+  CHANNEL_ID = json_data['header']['c4TabbedHeaderRenderer']['channelId']
+  return CHANNEL_ID
+CHANNEL_ID = get_channel_id()
 
 #API keys
 API_KEY = 'AIzaSyCdY6oRpKZkrQNcW28u0wCCM-HL24aVrpQ'#'AIzaSyDLgV5vjxJ5Qo9JCr1hfJoUCd4rSyUpwnc'#
 
-
+#video details
 def get_video_details(video_id):
     
    #second API call
@@ -34,7 +39,7 @@ def get_video_details(video_id):
 
     return view_count, like_count, comment_count 
 
-
+#video
 def get_videos(df):
 
   #api call
@@ -89,46 +94,9 @@ pageToken = ""
 url = "https://www.googleapis.com/youtube/v3/search?key="+API_KEY+"&channelId="+CHANNEL_ID+"&part=snippet,id&order=date&maxResults=10000"+pageToken
 response =  requests.get(url).json()
 
-#build our dataframe
+#dataframe
 df = pd.DataFrame(columns=("video_id","video_title","upload_date","view_count","like_count","comment_count"))
 df = get_videos(df)
-
-# dataset without making api call (apirestrictions)
-
-# Define the Streamlit app
-def app():
-    st.set_page_config(page_title="YouTube Data Dashboard", page_icon=":guardsman:", layout="wide")
-    st.title("YouTube Data Dashboard")
-    data = get_youtube_data()
-
-    # Display the data in a chart or table
-    if st.checkbox("Show data"):
-        st.write("Number of Subscriber ", data['items'][0]['statistics']['subscriberCount'])
-        st.write("Number of Views", data['items'][0]['statistics']['viewCount'])
-        st.write("Number of Videos", data['items'][0]['statistics']['videoCount'])
-
-# Run the app
-if __name__ == "__main__":
-    app()
-
-# title
-with header_mid:
-    st.title('YouTube Dashboard')
-    
-# sidebar
-with st.sidebar:
-    Campaign_filter = st.multiselect(label= 'Select The Campaign',
-                                options=df['campaign'].unique(),
-                                default=df['campaign'].unique())
-
-    Age_filter = st.multiselect(label='Select Age Group',
-                            options=df['age'].unique(),
-                            default=df['age'].unique())
-
-    Gender_filter = st.multiselect(label='Select Gender Group',
-                            options=df['gender'].unique(),
-                            default=df['gender'].unique())
-
 
 # showing dataset
 st.dataframe(df)
@@ -145,3 +113,30 @@ st.download_button(
    "text/csv",
    key='download-csv'
 )
+
+# # Display the data in a chart or table
+# if st.checkbox("Show data"):
+#         st.write("Number of Subscriber ", data['items'][0]['statistics']['subscriberCount'])
+#         st.write("Number of Views", data['items'][0]['statistics']['viewCount'])
+#         st.write("Number of Videos", data['items'][0]['statistics']['videoCount'])
+
+# # title
+# with header_mid:
+#     st.title('YouTube Data Dashboard')
+    
+# # sidebar
+# with st.sidebar:
+#     Campaign_filter = st.multiselect(label= 'Select The Campaign',
+#                                 options=df['campaign'].unique(),
+#                                 default=df['campaign'].unique())
+
+#     Age_filter = st.multiselect(label='Select Age Group',
+#                             options=df['age'].unique(),
+#                             default=df['age'].unique())
+
+#     Gender_filter = st.multiselect(label='Select Gender Group',
+#                             options=df['gender'].unique(),
+#                             default=df['gender'].unique())
+
+
+
