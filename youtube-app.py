@@ -9,8 +9,7 @@ from bs4 import BeautifulSoup
 
 st.set_page_config(page_title="YouTube Data Dashboard", page_icon="chart_with_upwards_trend")
 
-
-#scraping channel id from url input
+#scraping channel id from an url input
 def get_channel_id():
   URL = st.sidebar.text_input("Enter channel's URL", 'https://www.youtube.com/@rad827')
   soup = BeautifulSoup(requests.get(URL, cookies={'CONSENT': 'YES+1'}).text, "html.parser")
@@ -137,6 +136,3 @@ st.download_button(
 #     Gender_filter = st.multiselect(label='Select Gender Group',
 #                             options=df['gender'].unique(),
 #                             default=df['gender'].unique())
-
-
-
