@@ -7,7 +7,6 @@ st.set_page_config(page_title="Sales Dashboard", page_icon=":bar_chart:", layout
 
 st.header('YouTube')
 
-
 df = pd.read_csv('file.csv')
 st.dataframe(df)
 st.sidebar.success('Complete')
@@ -33,7 +32,6 @@ with right_column:
     st.metric(label='Average Like Count:', value=average_likes)
 
 st.markdown("""---""")
-
 
 left_column, right_column = st.columns(2)
 
@@ -67,10 +65,6 @@ with right_column:
     yt_img = f'http://img.youtube.com/vi/{ytid}/hqdefault.jpg'
     st.image(yt_img,use_column_width='Auto')
     st.metric(label = df.loc[max_views_index, 'video_title'], value= df.loc[max_views_index, 'view_count'])
-
-    
-
-
 
 # ---- HIDE STREAMLIT STYLE ----
 hide_st_style = """
